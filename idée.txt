@@ -1,4 +1,0 @@
-Idée Jeux
-
-thème dragon ball
-Bouton jeux = Borne d'arcade === Fléche directionnel qui bouge lors de l'appuit d'une touche
