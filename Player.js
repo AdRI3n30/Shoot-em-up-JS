@@ -46,34 +46,35 @@ export default class Player {
     }
   }
   keydown = (e) => {
-    if (e.code === "ArrowUp") {
+    if (e.code === "KeyW" || e.code === "ArrowUp") {
       this.upPressed = true;
     }
-    if (e.code === "ArrowDown") {
+    if (e.code === "KeyS" || e.code === "ArrowDown") {
       this.downPressed = true;
     }
-    if (e.code === "ArrowLeft") {
+    if (e.code === "KeyA" || e.code === "ArrowLeft") {
       this.leftPressed = true;
     }
-    if (e.code === "ArrowRight") {
+    if (e.code === "KeyD" || e.code === "ArrowRight") {
       this.rightPressed = true;
     }
     if (e.code === "Space") {
       this.shootPressed = true;
     }
+
   };
 
   keyup = (e) => {
-    if (e.code === "ArrowUp") {
+    if (e.code === "KeyW" || e.code === "ArrowUp") {
       this.upPressed = false;
     }
-    if (e.code === "ArrowDown") {
+    if (e.code === "KeyS" || e.code === "ArrowDown") {
       this.downPressed = false;
     }
-    if (e.code === "ArrowLeft") {
+    if (e.code === "KeyA" || e.code === "ArrowLeft") {
       this.leftPressed = false;
     }
-    if (e.code === "ArrowRight") {
+    if (e.code === "KeyD" || e.code === "ArrowRight") {
       this.rightPressed = false;
     }
     if (e.code === "Space") {
