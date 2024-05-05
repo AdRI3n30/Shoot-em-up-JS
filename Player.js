@@ -9,7 +9,7 @@ export default class Player {
     document.addEventListener("keydown", this.keydown);
     document.addEventListener("keyup", this.keyup);
   }
-  
+
   draw(ctx) {
     this.move();
     ctx.strokeStyle = "yellow";
@@ -20,17 +20,17 @@ export default class Player {
   }
 
   move() {
-    if (this.downPressed) {
+    // Mise à jour des coordonnées du joueur en fonction des touches appuyées
+    if (this.downPressed && this.y < 550) {
       this.y += this.speed;
     }
-    if (this.upPressed) {
+    if (this.upPressed && this.y > 0) {
       this.y -= this.speed;
     }
-    if (this.leftPressed) {
+    if (this.leftPressed && this.x > 0) {
       this.x -= this.speed;
     }
-
-    if (this.rightPressed) {
+    if (this.rightPressed && this.x< 500) {
       this.x += this.speed;
     }
   }
@@ -45,7 +45,9 @@ export default class Player {
       this.bulletController.shoot(bulletX, bulletY, speed, damage, delay);
     }
   }
+
   keydown = (e) => {
+    // Gestion des touches enfoncées
     if (e.code === "KeyW" || e.code === "ArrowUp") {
       this.upPressed = true;
     }
@@ -61,10 +63,10 @@ export default class Player {
     if (e.code === "Space") {
       this.shootPressed = true;
     }
-
   };
 
   keyup = (e) => {
+    // Gestion des touches relâchées
     if (e.code === "KeyW" || e.code === "ArrowUp") {
       this.upPressed = false;
     }

@@ -5,17 +5,17 @@ body {
     padding: 0;
     margin: 0;
     height: 100vh;
-    background: linear-gradient(
-      0deg,
-      rgb(17, 51, 161) 0%,
-      rgb(136, 34, 195) 100%
-    );
+    background-image: url("/src/dragon-ball-z-retro-thumb.jpg");
+    background-size: cover;
   }
+
   h1 {
     margin: 0px;
     margin-bottom: 10px;
-    font-size: 2.9em;
-    color: lightgrey;
+    font-family: 'Arial Black', sans-serif; 
+    font-size: 3em;
+    color: #FF0000; 
+    text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700;
   }
   .controls {
     display: grid;
@@ -27,20 +27,87 @@ body {
   .box {
     width: 50px;
     height: 50px;
-    background-color: black; /* Juste pour la démo */
     position: fixed;
     bottom: 190px;
     left: 10px;
-}
+    background-color: #FF0000;
+    border: 2px solid #FFD700;
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: bold; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Arial Black', sans-serif; 
+    transition-duration: 0.4s;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 
-#q {
-    bottom: 130px;
-}
-
-#s {
+  .space-box {
+    width: 172px;
+    height: 50px;
+    position: fixed;
     bottom: 70px;
+    left: 10px;
+    background-color: #FF0000;
+    border: 2px solid #FFD700;
+    border-radius: 10px;
+  }
+
+  #z {
+    background-image: url('/src/Z.png');
+    background-size: cover;
+    left: 70px;
+
+  }
+  
+  #q {
+    background-image: url('/src/Q.png');
+    background-size: cover;
+    bottom: 130px;
+  }
+  
+  #s {
+    background-image: url('/src/S.png');
+    background-size: cover;
+    bottom: 130px;
+    left: 70px;
+  }
+  
+  #d {
+    background-image: url('/src/D.png');
+    background-size: cover;
+    bottom: 130px;
+    left: 130px;
+  }
+  
+
+#startButton {
+  background-color: #FF0000;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  border: 2px solid #FFD700;
+  font-family: 'Arial Black', sans-serif;
+  transition-duration: 0.4s;
 }
 
-#d {
-    bottom: 10px;
+#startButton:hover {
+  background-color: #FFA500;
+}
+
+#startButton:active {
+  background-color: #8B0000;
+  transform: translateY(2px);
+  border-color: #CD853F;
 }
