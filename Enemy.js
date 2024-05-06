@@ -6,7 +6,9 @@ export default class Enemy {
       this.health = health;
       this.width = 50;
       this.height = 50;
+      this.speed = 0.1;
     }
+
   
     draw(ctx) {
       ctx.fillStyle = this.color;
@@ -27,9 +29,16 @@ export default class Enemy {
         this.x + this.width / 3.5,
         this.y + this.height / 1.5
       );
+      this.move();
     }
   
     takeDamage(damage) {
       this.health -= damage;
+    }
+
+    move() {
+      if (this.y < 600) {
+        this.y += this.speed;
+      }
     }
   }
