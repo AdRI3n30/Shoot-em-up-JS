@@ -13,24 +13,7 @@ const bulletController = new BulletControler(canvas);
 const player = new Player(canvas.width / 2.2, canvas.height / 1.3, bulletController);
 
 
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
-function generateRandomEnemy() {
-  var x = getRandomNumber(0, (canvas.width- 50));
-  var y = getRandomNumber(0,0); 
-  var colors = ["green", "yellow", "red", "blue"]; 
-  var color = colors[getRandomNumber(0, colors.length - 1)]; 
-
-  return new Enemy(x, y, color, 1);
-}
-
-const enemies = [];
-
-for (var i = 0; i < 3; i++) {
-  enemies.push(generateRandomEnemy());
-}
 
 let gameLoopInterval;
 
@@ -46,21 +29,6 @@ function gameLoop() {
 ;  ctx.fillRect(0, 0, canvas.width, canvas.height);
   bulletController.draw(ctx);
   player.draw(ctx);
-  enemies.forEach(enemy => {
-    if (bulletController.collideWith(enemy)) {
-      if (enemy.health <= 0) {
-        const index = enemies.indexOf(enemy);
-        enemies.splice(index, 1);
-      }
-    } else {
-      enemy.draw(ctx);
-    }
-    if(enemy.y >= 600){
-      const index = enemies.indexOf(enemy);
-      enemies.splice(index, 1);
-    }
-    enemy.draw(ctx);
-  })
 }
 
 function setCommonStyle() {
