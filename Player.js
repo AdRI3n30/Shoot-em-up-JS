@@ -6,16 +6,29 @@ export default class Player {
     this.width = 50;
     this.height = 50;
     this.speed = 4;
+    this.spriteDefault = new Image();
+    this.spriteDefault.src = "/src/Broly1.png"; 
+    this.spriteShoot = new Image();
+    this.spriteShoot.src = "/src/Broly2.png";
+    this.spriteLeft = new Image();
+    this.spriteLeft.src = "/src/Broly3.png"; 
+    this.shootDuration = 6; 
+    this.shootTimer = 0;
+    this.currentSprite = this.spriteDefault;
     document.addEventListener("keydown", this.keydown);
     document.addEventListener("keyup", this.keyup);
   }
 
   draw(ctx) {
     this.move();
-    ctx.strokeStyle = "yellow";
     ctx.strokeRect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = "black";
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
+    if (this.shootTimer > 0) {
+      this.currentSprite = this.spriteShoot;
+      this.shootTimer--;
+    } else {
+      this.currentSprite = this.spriteDefault;
+    }
     this.shoot();
   }
 
@@ -29,20 +42,25 @@ export default class Player {
     }
     if (this.leftPressed && this.x > 0) {
       this.x -= this.speed;
+      this.currentSprite = this.spriteLeft;
     }
     if (this.rightPressed && this.x< 500) {
       this.x += this.speed;
+      this.currentSprite = this.spriteDefault;
     }
   }
 
   shoot() {
-    if (this.shootPressed) {
+    if (this.shootPressed && this.shootTimer === 0) {
       const speed = 5;
-      const delay = 7;
+      const delay = 2;
       const damage = 1;
       const bulletX = this.x + this.width / 2;
       const bulletY = this.y;
       this.bulletController.shoot(bulletX, bulletY, speed, damage, delay);
+
+      // Mettre à jour le timer de tir pour changer le sprite
+      this.shootTimer = this.shootDuration;
     }
   }
 

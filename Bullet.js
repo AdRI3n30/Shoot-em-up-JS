@@ -6,7 +6,7 @@ export default class Bullet{
         this.damage = damage;
         this.width = 5;
         this.height = 15;
-        this.color = "red";
+        this.color = "yellow";
     }
     draw(ctx) {
         ctx.fillStyle = this.color;

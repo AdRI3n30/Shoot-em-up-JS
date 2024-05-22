@@ -5,8 +5,6 @@ body {
     padding: 0;
     margin: 0;
     height: 100vh;
-    background-image: url("/src/dragon-ball-z-retro-thumb.jpg");
-    background-size: cover;
   }
 
   h1 {
@@ -44,6 +42,7 @@ body {
     transition-duration: 0.4s;
     background-size: cover;
     background-repeat: no-repeat;
+    z-index: 2;
   }
 
   .space-box {
@@ -55,6 +54,7 @@ body {
     background-color: #FF0000;
     border: 2px solid #FFD700;
     border-radius: 10px;
+    z-index: 2;
   }
 
   #z {
@@ -100,6 +100,7 @@ body {
   border: 2px solid #FFD700;
   font-family: 'Arial Black', sans-serif;
   transition-duration: 0.4s;
+  z-index: 2;
 }
 
 #startButton:hover {
@@ -110,4 +111,9 @@ body {
   background-color: #8B0000;
   transform: translateY(2px);
   border-color: #CD853F;
+}
+
+#game{
+  z-index: 20;
+  background-color: transparent;
 }
