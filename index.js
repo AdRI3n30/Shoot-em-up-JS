@@ -39,8 +39,8 @@ function startGame() {
 
 function gameLoop() {
   if (player.isGameOver) {
-    player.draw(ctx); // Afficher le message de "Game Over"
-    clearInterval(gameLoopInterval); // Arrêter la boucle de jeu
+    player.draw(ctx); 
+    clearInterval(gameLoopInterval); 
     return;
   }
   ctx.fillStyle = "rgba(0, 0, 0, 0.2)";

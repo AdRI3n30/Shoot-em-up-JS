@@ -6,9 +6,9 @@ export default class Player {
     this.width = 50;
     this.height = 50;
     this.speed = 4;
-    this.health = 100; // Points de vie initial
-    this.maxHealth = 100; // Points de vie maximum
-    this.isGameOver = false; // Indicateur de fin de jeu
+    this.health = 100; 
+    this.maxHealth = 100; 
+    this.isGameOver = false; 
     this.spriteDefault = new Image();
     this.spriteDefault.src = "/src/Broly1.png";
     this.spriteShoot = new Image();
