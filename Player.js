@@ -6,13 +6,16 @@ export default class Player {
     this.width = 50;
     this.height = 50;
     this.speed = 4;
+    this.health = 100; // Points de vie initial
+    this.maxHealth = 100; // Points de vie maximum
+    this.isGameOver = false; // Indicateur de fin de jeu
     this.spriteDefault = new Image();
-    this.spriteDefault.src = "/src/Broly1.png"; 
+    this.spriteDefault.src = "/src/Broly1.png";
     this.spriteShoot = new Image();
     this.spriteShoot.src = "/src/Broly2.png";
     this.spriteLeft = new Image();
-    this.spriteLeft.src = "/src/Broly3.png"; 
-    this.shootDuration = 6; 
+    this.spriteLeft.src = "/src/Broly3.png";
+    this.shootDuration = 6;
     this.shootTimer = 0;
     this.currentSprite = this.spriteDefault;
     document.addEventListener("keydown", this.keydown);
@@ -20,9 +23,16 @@ export default class Player {
   }
 
   draw(ctx) {
+    if (this.isGameOver) {
+      this.displayGameOver(ctx);
+      return;
+    }
+
     this.move();
     ctx.strokeRect(this.x, this.y, this.width, this.height);
     ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
+    this.drawHealthBar(ctx);
+
     if (this.shootTimer > 0) {
       this.currentSprite = this.spriteShoot;
       this.shootTimer--;
@@ -32,8 +42,20 @@ export default class Player {
     this.shoot();
   }
 
+  drawHealthBar(ctx) {
+    const barWidth = this.width;
+    const barHeight = 5;
+    const barX = this.x;
+    const barY = this.y - barHeight - 5;
+
+    ctx.fillStyle = "red";
+    ctx.fillRect(barX, barY, barWidth, barHeight);
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(barX, barY, (this.health / this.maxHealth) * barWidth, barHeight);
+  }
+
   move() {
-    // Mise à jour des coordonnées du joueur en fonction des touches appuyées
     if (this.downPressed && this.y < 550) {
       this.y += this.speed;
     }
@@ -44,7 +66,7 @@ export default class Player {
       this.x -= this.speed;
       this.currentSprite = this.spriteLeft;
     }
-    if (this.rightPressed && this.x< 500) {
+    if (this.rightPressed && this.x < 500) {
       this.x += this.speed;
       this.currentSprite = this.spriteDefault;
     }
@@ -58,14 +80,29 @@ export default class Player {
       const bulletX = this.x + this.width / 2;
       const bulletY = this.y;
       this.bulletController.shoot(bulletX, bulletY, speed, damage, delay);
-
-      // Mettre à jour le timer de tir pour changer le sprite
       this.shootTimer = this.shootDuration;
     }
   }
 
+  takeDamage(damage) {
+    this.health -= damage;
+    if (this.health <= 0) {
+      this.health = 0;
+      this.isGameOver = true;
+    }
+  }
+
+  displayGameOver(ctx) {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    ctx.fillStyle = "white";
+    ctx.font = "48px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("Game Over", ctx.canvas.width / 2, ctx.canvas.height / 2);
+  }
+
   keydown = (e) => {
-    // Gestion des touches enfoncées
     if (e.code === "KeyW" || e.code === "ArrowUp") {
       this.upPressed = true;
     }
@@ -84,7 +121,6 @@ export default class Player {
   };
 
   keyup = (e) => {
-    // Gestion des touches relâchées
     if (e.code === "KeyW" || e.code === "ArrowUp") {
       this.upPressed = false;
     }

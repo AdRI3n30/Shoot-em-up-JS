@@ -18,6 +18,8 @@ const enemyWidth = 50;
 const enemyHeight = 50;
 const enemySpeed = 2;
 
+
+
 for (let i = 0; i < enemyCount; i++) {
   const x = Math.random() * (canvas.width - enemyWidth);
   const y = Math.random() * (canvas.height - enemyHeight) - canvas.height;
@@ -33,7 +35,14 @@ function startGame() {
   gameLoopInterval = setInterval(gameLoop, 1000 / 60);
 }
 
+
+
 function gameLoop() {
+  if (player.isGameOver) {
+    player.draw(ctx); // Afficher le message de "Game Over"
+    clearInterval(gameLoopInterval); // Arrêter la boucle de jeu
+    return;
+  }
   ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   bulletController.draw(ctx);
@@ -47,6 +56,13 @@ function gameLoop() {
       const index = enemies.indexOf(enemy);
       enemies.splice(index, 1);
     }
+
+
+    if (player.collideWith(enemy)) {
+      player.takeDamage(10); 
+      const index = enemies.indexOf(enemy);
+      enemies.splice(index, 1); 
+    }
   });
 
   // Rajouter de nouveaux ennemis si nécessaire
@@ -57,6 +73,17 @@ function gameLoop() {
     enemies.push(enemy);
   }
 }
+
+
+// Ajoutez cette méthode à la classe Player pour vérifier les collisions
+Player.prototype.collideWith = function (sprite) {
+  return (
+    this.x < sprite.x + sprite.width &&
+    this.x + this.width > sprite.x &&
+    this.y < sprite.y + sprite.height &&
+    this.y + this.height > sprite.y
+  );
+};
 
 
 startButton.addEventListener("click", startGame);
