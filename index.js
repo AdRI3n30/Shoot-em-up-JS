@@ -7,7 +7,7 @@ const ctx = canvas.getContext("2d");
 const startButton = document.getElementById("startButton");
 
 canvas.width = 550;
-canvas.height = 600;
+canvas.height = 550;
 
 const bulletController = new BulletControler(canvas);
 const player = new Player(canvas.width / 2.2, canvas.height / 1.3, bulletController);
@@ -16,8 +16,12 @@ let enemies = [];
 const enemyCount = 5;
 const enemyWidth = 50;
 const enemyHeight = 50;
-const enemySpeed = 2;
+const enemySpeed = 1;
 
+let backgroundX = 0;
+const backgroundImage = new Image();
+backgroundImage.src = "/src/Continent_de_Glace.webp";
+const scrollSpeed = 2;
 
 
 for (let i = 0; i < enemyCount; i++) {
@@ -37,16 +41,25 @@ function startGame() {
 
 
 
+
 function gameLoop() {
   if (player.isGameOver) {
     player.draw(ctx); 
     clearInterval(gameLoopInterval); 
     return;
   }
-  ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  bulletController.draw(ctx);
+  
+  backgroundX -= scrollSpeed; 
+  if (backgroundX <= -canvas.width) {
+    backgroundX = 0;
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(backgroundImage, backgroundX, 0, canvas.width, canvas.height);
+  ctx.drawImage(backgroundImage, backgroundX + canvas.width, 0, canvas.width, canvas.height);
+
   player.draw(ctx);
+  player.bulletController.draw(ctx);
 
   enemies.forEach((enemy) => {
     enemy.update(canvas);
@@ -65,7 +78,7 @@ function gameLoop() {
     }
   });
 
-  // Rajouter de nouveaux ennemis si nécessaire
+  // Rajoute des ennemies s'il sont tué
   while (enemies.length < enemyCount) {
     const x = Math.random() * (canvas.width - enemyWidth);
     const y = Math.random() * (canvas.height - enemyHeight) - canvas.height;
@@ -75,7 +88,7 @@ function gameLoop() {
 }
 
 
-// Ajoutez cette méthode à la classe Player pour vérifier les collisions
+// Fonction permettant la vérification des collisions
 Player.prototype.collideWith = function (sprite) {
   return (
     this.x < sprite.x + sprite.width &&
@@ -87,3 +100,6 @@ Player.prototype.collideWith = function (sprite) {
 
 
 startButton.addEventListener("click", startGame);
+
+
+

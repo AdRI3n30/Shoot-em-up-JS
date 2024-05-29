@@ -25,10 +25,10 @@ export default class Enemy {
     }
   
     update(canvas) {
-      this.y += this.speed;
-      if (this.y > canvas.height) {
-        this.y = -this.height;
-        this.x = Math.random() * (canvas.width - this.width);
+      this.x -= this.speed; // Déplacer vers la gauche
+      if (this.x + this.width < 0) { // Réinitialiser l'ennemi s'il sort de l'écran
+        this.x = canvas.width + Math.random() * canvas.width;
+        this.y = Math.random() * (canvas.height - this.height);
       }
     }
   

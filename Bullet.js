@@ -28,17 +28,9 @@ export default class Bullet {
     }
 
     draw(ctx) {
-        this.y -= this.speed;
-
-        if (this.currentSprite.complete) {
-            // Dessiner l'image du sprite avec les dimensions définies
-            ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
-        } else {
-            // En cas de problème avec le chargement du sprite, dessiner un rectangle jaune
-            ctx.fillStyle = this.color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-        }
-    }
+        this.x += this.speed;
+        ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
+      }
 
     collideWith(sprite) {
         if (
