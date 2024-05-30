@@ -8,9 +8,9 @@ export default class Bullet {
 
         // Chargez les trois images de sprites
         this.sprites = [
-            this.loadSprite("/src/blazt1.png"),
-            this.loadSprite("/src/blazt2.png"),
-            this.loadSprite("/src/blazt3.png")
+            this.loadSprite("/src/Broly/blazt1.png"),
+            this.loadSprite("/src/Broly/blazt2.png"),
+            this.loadSprite("/src/Broly/blazt3.png")
         ];
 
         // Choisissez une image de sprite au hasard

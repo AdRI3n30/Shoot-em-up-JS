@@ -1,5 +1,7 @@
 export default class Player {
   constructor(x, y, bulletController) {
+    this.initialX = x;
+    this.initialY = y;
     this.x = x;
     this.y = y;
     this.bulletController = bulletController;
@@ -8,14 +10,14 @@ export default class Player {
     this.speed = 4;
     this.health = 100; 
     this.maxHealth = 100; 
-    this.isGameOver = false; 
-    this.isWin = false;
+    this.reset();
+    this.isGameOver = false;
     this.spriteDefault = new Image();
-    this.spriteDefault.src = "/src/Broly1.png";
+    this.spriteDefault.src = "/src/Broly/Broly1.png";
     this.spriteShoot = new Image();
-    this.spriteShoot.src = "/src/Broly2.png";
+    this.spriteShoot.src = "/src/Broly/Broly2.png";
     this.spriteLeft = new Image();
-    this.spriteLeft.src = "/src/Broly3.png";
+    this.spriteLeft.src = "/src/Broly/Broly3.png";
     this.shootDuration = 6;
     this.shootTimer = 0;
     this.currentSprite = this.spriteDefault;
@@ -23,17 +25,19 @@ export default class Player {
     document.addEventListener("keyup", this.keyup);
   }
 
+
+  reset() {
+    this.x = this.initialX;
+    this.y = this.initialY;
+    this.health = this.maxHealth;
+    this.isGameOver = false;
+  }
+
   draw(ctx) {
     if (this.isGameOver) {
       this.ecranGameOver(ctx);
       return;
     }
-
-    if (this.isWin) {
-      this.ecranwin(ctx);
-      return;
-    }
-
     this.move();
     ctx.strokeRect(this.x, this.y, this.width, this.height);
     ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
@@ -68,7 +72,7 @@ export default class Player {
   }
 
   move() {
-    if (this.downPressed && this.y < 550) {
+    if (this.downPressed && this.y < 600) {
       this.y += this.speed;
     }
     if (this.upPressed && this.y > 0) {
@@ -78,7 +82,7 @@ export default class Player {
       this.x -= this.speed;
       this.currentSprite = this.spriteLeft;
     }
-    if (this.rightPressed && this.x < 500) {
+    if (this.rightPressed && this.x < 1200) {
       this.x += this.speed;
       this.currentSprite = this.spriteDefault;
     }
@@ -112,17 +116,6 @@ export default class Player {
     ctx.font = "48px Arial";
     ctx.textAlign = "center";
     ctx.fillText("Game Over", ctx.canvas.width / 2, ctx.canvas.height / 2);
-  }
-
-
-  ecranwin(ctx){
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-    ctx.fillStyle = "white";
-    ctx.font = "48px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("You win", ctx.canvas.width / 2, ctx.canvas.height / 2);
   }
 
   keydown = (e) => {

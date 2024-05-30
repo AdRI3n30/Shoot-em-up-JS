@@ -2,17 +2,20 @@ import Player from "./Player.js";
 import Enemy from "./Enemy.js";
 import BulletControler from "./BulletControler.js";
 import Level from './level.js';
-
+import Boss from './EnnemyBoss.js';
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const startButton = document.getElementById("startButton");
+const winMessage = document.getElementById("winMessage");
+const restartButton = document.getElementById("restartButton");
 
-canvas.width = 550;
-canvas.height = 550;
+canvas.width = 1250;
+canvas.height = 650;
 
 const bulletController = new BulletControler(canvas);
 const player = new Player(canvas.width / 2.2, canvas.height / 1.3, bulletController);
+
 
 
 let player2;
@@ -20,7 +23,7 @@ let enemies = [];
 const enemyCount = 5;
 const enemyWidth = 50;
 const enemyHeight = 50;
-const enemySpeed = 3;
+let boss;
 
 let backgroundX = 0;
 const scrollSpeed = 2;
@@ -28,8 +31,9 @@ const scrollSpeed = 2;
 
 let currentLevelIndex = 0;
 const levels = [
-  new Level(1, 5, 2,"/src/Saibabam.png" , "/src/Fond1.png", 5),
-  new Level(2, 10, 3,"/src/Sbire2.png" ,"/src/Continent_de_Glace.webp", 5),
+  new Level(1, 5, 2,"/src/ennemy/Saibabam.png" , "/src/fond/Fond1.png", 5),
+  new Level(2, 10, 3,"/src/ennemy/Sbire2.png" ,"/src/fond/Continent_de_Glace.webp", 5),
+  new Level(3, 1, 1, Boss.currentSprite, "/src/fond/fond3.png", 1)
 ];
 
 
@@ -38,20 +42,26 @@ function initLevel(levelIndex) {
   backgroundX = 0;
   player2 = new Player(canvas.width / 2.2, canvas.height / 1.3, bulletController);
   enemies = [];
-  console.log(level.enemyImage);
   
-  // Créez les ennemis pour ce niveau
-  while (enemies.length < level.enemyCount) {
-    const y = Math.random() * (canvas.height - enemyHeight);
-    const x = canvas.width + Math.random() * canvas.width;
-    const enemy = new Enemy(x, y, enemyWidth, enemyHeight, level.enemyImage, level.enemySpeed);
-    enemies.push(enemy);
+  // Créez les ennemis pour les niveaux
+  if (levelIndex === 2) { 
+    boss = new Boss(canvas.width * 0.75, 0, 100, 100, 300, 2);
+  } else {
+    while (enemies.length < level.enemyCount) {
+      const y = Math.random() * (canvas.height - enemyHeight);
+      const x = canvas.width + Math.random() * canvas.width;
+      const enemy = new Enemy(x, y, enemyWidth, enemyHeight, level.enemyImage, level.enemySpeed);
+      enemies.push(enemy);
+    }
   }
 }
 let gameLoopInterval;
 
 function startGame() {
+  player.reset();
+  winMessage.style.visibility = 'hidden';
   startButton.style.display = "none";
+  winMessage.classList.add("hidden");
   canvas.style.display = "block";
   initLevel(0);
   gameLoopInterval = setInterval(gameLoop, 1000 / 60);
@@ -62,18 +72,11 @@ function startGame() {
 
 function gameLoop() {
   if (player.isGameOver) {
+    console.log(player.isGameOver);
     player.draw(ctx); 
     clearInterval(gameLoopInterval); 
     return;
   }
-
-  if (player.isWin) {
-    player.draw(ctx); 
-    clearInterval(gameLoopInterval); 
-    return;
-  }
-  
-  
   const level = levels[currentLevelIndex];
   backgroundX -= scrollSpeed; 
   if (backgroundX <= -canvas.width) {
@@ -87,50 +90,78 @@ function gameLoop() {
   player.draw(ctx);
   player.bulletController.draw(ctx);
 
-  enemies.forEach((enemy) => {
-    enemy.update(canvas);
-    enemy.draw(ctx);
 
-    if (bulletController.collideWith(enemy)) {
-      const index = enemies.indexOf(enemy);
-      enemies.splice(index, 1);
-      level.killCount++;
+  if (currentLevelIndex === 2) {  // Niveau du Boss
+    if (boss && boss.alive) {
+      boss.move(canvas);
+      boss.draw(ctx);
+
+      if (bulletController.collideWith(boss)) {
+        boss.takeDamage(10);
+        if (!boss.alive) {
+          niveauSuivant();
+        }
+      }
+
+      if (player.collideWith(boss)) {
+        player.takeDamage(10);
+      }
     }
+  } else {
+    enemies.forEach((enemy) => {
+      enemy.update(canvas);
+      enemy.draw(ctx);
+
+      if (bulletController.collideWith(enemy)) {
+        const index = enemies.indexOf(enemy);
+        enemies.splice(index, 1);
+        level.killCount++;
+      }
 
 
-    if (player.collideWith(enemy)) {
-      player.takeDamage(10); 
-      const index = enemies.indexOf(enemy);
-      enemies.splice(index, 1); 
+      if (player.collideWith(enemy)) {
+        player.takeDamage(10); 
+        const index = enemies.indexOf(enemy);
+        enemies.splice(index, 1); 
+      }
+
+      console.log(level.killCount);
+      if (level.killCount >= level.killCountTarget) {
+        niveauSuivant();
+        level.killCount = 0;
+      }
+    });
+
+    // Rajoute des ennemies s'il sont tué
+    while (enemies.length < enemyCount) {
+      const x = Math.random() * (canvas.width - enemyWidth);
+      const y = Math.random() * (canvas.height - enemyHeight) - canvas.height;
+      const enemy = new Enemy(x, y, enemyWidth, enemyHeight, level.enemyImage, level.enemySpeed);
+      enemies.push(enemy);
     }
-
-    console.log(level.killCount);
-    if (level.killCount >= level.killCountTarget) {
-      advanceToNextLevel();
-      level.killCount = 0;
-    }
-  });
-
-  // Rajoute des ennemies s'il sont tué
-  while (enemies.length < enemyCount) {
-    const x = Math.random() * (canvas.width - enemyWidth);
-    const y = Math.random() * (canvas.height - enemyHeight) - canvas.height;
-    const enemy = new Enemy(x, y, enemyWidth, enemyHeight, level.enemyImage, level.enemySpeed);
-    enemies.push(enemy);
   }
 }
 
 
 
-function advanceToNextLevel() {
+function niveauSuivant() {
   currentLevelIndex++;
   if (currentLevelIndex < levels.length) {
     initLevel(currentLevelIndex);
   } else {
     // Le jeu est terminé
-    Player.isWin = true;
+    console.log("terminé");
+    currentLevelIndex = 0;
+    Player.health = 100; 
+    showWinMessage();
     clearInterval(gameLoopInterval);
   }
+}
+
+
+function showWinMessage() {
+  canvas.style.display = "none";
+  winMessage.style.visibility = 'visible';
 }
 
 // Fonction permettant la vérification des collisions
@@ -145,6 +176,7 @@ Player.prototype.collideWith = function (sprite) {
 
 
 startButton.addEventListener("click", startGame);
+restartButton.addEventListener("click", startGame);
 
 
 

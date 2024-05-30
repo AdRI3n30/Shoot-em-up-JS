@@ -31,17 +31,8 @@ body {
     background-color: #FF0000;
     border: 2px solid #FFD700;
     border-radius: 10px;
-    color: #FFFFFF;
-    font-size: 24px;
-    font-weight: bold; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
     cursor: pointer;
-    font-family: 'Arial Black', sans-serif; 
     transition-duration: 0.4s;
-    background-size: cover;
-    background-repeat: no-repeat;
     z-index: 2;
   }
 
@@ -116,4 +107,36 @@ body {
 #game{
   z-index: 20;
   background-color: transparent;
+}
+
+
+canvas {
+  display: none;
+  border: 1px solid #000;
+}
+
+.hidden {
+  display: none;
+}
+
+#winMessage {
+  display: flex;
+  visibility: hidden;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 40;
+}
+
+#winMessage h1 {
+  margin-bottom: 1rem;
+
 }
