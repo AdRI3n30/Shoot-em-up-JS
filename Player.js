@@ -9,6 +9,7 @@ export default class Player {
     this.health = 100; 
     this.maxHealth = 100; 
     this.isGameOver = false; 
+    this.isWin = false;
     this.spriteDefault = new Image();
     this.spriteDefault.src = "/src/Broly1.png";
     this.spriteShoot = new Image();
@@ -25,6 +26,11 @@ export default class Player {
   draw(ctx) {
     if (this.isGameOver) {
       this.ecranGameOver(ctx);
+      return;
+    }
+
+    if (this.isWin) {
+      this.ecranwin(ctx);
       return;
     }
 
@@ -106,6 +112,17 @@ export default class Player {
     ctx.font = "48px Arial";
     ctx.textAlign = "center";
     ctx.fillText("Game Over", ctx.canvas.width / 2, ctx.canvas.height / 2);
+  }
+
+
+  ecranwin(ctx){
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    ctx.fillStyle = "white";
+    ctx.font = "48px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("You win", ctx.canvas.width / 2, ctx.canvas.height / 2);
   }
 
   keydown = (e) => {
