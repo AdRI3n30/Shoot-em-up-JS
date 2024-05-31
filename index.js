@@ -10,8 +10,8 @@ const startButton = document.getElementById("startButton");
 const winMessage = document.getElementById("winMessage");
 const restartButton = document.getElementById("restartButton");
 
-canvas.width = 1250;
-canvas.height = 650;
+canvas.width = 1050;
+canvas.height = 550;
 
 const bulletController = new BulletControler(canvas);
 const player = new Player(canvas.width / 2.2, canvas.height / 1.3, bulletController);

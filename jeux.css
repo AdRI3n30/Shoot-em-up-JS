@@ -49,27 +49,27 @@ body {
   }
 
   #z {
-    background-image: url('/src/Z.png');
+    background-image: url('/src/lettre/Z.png');
     background-size: cover;
     left: 70px;
 
   }
   
   #q {
-    background-image: url('/src/Q.png');
+    background-image: url('/src/lettre/Q.png');
     background-size: cover;
     bottom: 130px;
   }
   
   #s {
-    background-image: url('/src/S.png');
+    background-image: url('/src/lettre/S.png');
     background-size: cover;
     bottom: 130px;
     left: 70px;
   }
   
   #d {
-    background-image: url('/src/D.png');
+    background-image: url('/src/lettre/D.png');
     background-size: cover;
     bottom: 130px;
     left: 130px;
