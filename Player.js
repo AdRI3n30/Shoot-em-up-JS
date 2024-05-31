@@ -39,7 +39,6 @@ export default class Player {
       return;
     }
     this.move();
-    ctx.strokeRect(this.x, this.y, this.width, this.height);
     ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
     this.drawHealthBar(ctx);
 
@@ -72,7 +71,7 @@ export default class Player {
   }
 
   move() {
-    if (this.downPressed && this.y < 600) {
+    if (this.downPressed && this.y < 500) {
       this.y += this.speed;
     }
     if (this.upPressed && this.y > 0) {
@@ -82,7 +81,7 @@ export default class Player {
       this.x -= this.speed;
       this.currentSprite = this.spriteLeft;
     }
-    if (this.rightPressed && this.x < 1200) {
+    if (this.rightPressed && this.x < 1000) {
       this.x += this.speed;
       this.currentSprite = this.spriteDefault;
     }

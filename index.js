@@ -37,6 +37,29 @@ const levels = [
 ];
 
 
+
+const transformationImages = [
+  "/src/Broly/step/step4.png",
+  "/src/Broly/step/step5.png",
+  "/src/Broly/step/step4.png",
+  "/src/Broly/step/step5.png",
+  "/src/Broly/step/step4.png",
+  "/src/Broly/step/step5.png",
+  "/src/Broly/step/step4.png",
+  "/src/Broly/step/step5.png",
+  "/src/Broly/step/step1.png",
+  "/src/Broly/step/step2.png",
+  "/src/Broly/step/step3.png",
+  "/src/Broly/step/step6.png",
+  "/src/Broly/step/step7.png",
+  "/src/Broly/step/step8.png",
+  "/src/Broly/step/step9.png",
+  "/src/Broly/step/step10.png"
+];
+let transformationIndex = 0;
+
+
+
 function initLevel(levelIndex) {
   const level = levels[levelIndex];
   backgroundX = 0;
@@ -45,7 +68,7 @@ function initLevel(levelIndex) {
   
   // Créez les ennemis pour les niveaux
   if (levelIndex === 2) { 
-    boss = new Boss(canvas.width * 0.75, 0, 100, 100, 300, 2);
+    boss = new Boss(canvas.width - 200, canvas.height / 2 - 100, 100, 100, 200, 2);
   } else {
     while (enemies.length < level.enemyCount) {
       const y = Math.random() * (canvas.height - enemyHeight);
@@ -63,8 +86,28 @@ function startGame() {
   startButton.style.display = "none";
   winMessage.classList.add("hidden");
   canvas.style.display = "block";
-  initLevel(0);
-  gameLoopInterval = setInterval(gameLoop, 1000 / 60);
+  playTransformation(() => {
+    initLevel(0);
+    gameLoopInterval = setInterval(gameLoop, 1000 / 60);
+  });
+}
+
+
+function playTransformation(callback) {
+  let transformationInterval = setInterval(() => {
+    if (transformationIndex >= transformationImages.length) {
+      clearInterval(transformationInterval);
+      callback();
+      return;
+    }
+    let image = new Image();
+    image.src = transformationImages[transformationIndex];
+    image.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, (canvas.width - image.width) / 2, (canvas.height - image.height) / 2);
+      transformationIndex++;
+    };
+  }, 270); // Intervalle de 500 ms entre chaque image de transformation
 }
 
 
