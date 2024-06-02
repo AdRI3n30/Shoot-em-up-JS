@@ -1,8 +1,9 @@
-import Player from "./Player.js";
-import Enemy from "./Enemy.js";
-import BulletControler from "./BulletControler.js";
-import Level from './level.js';
-import Boss from './EnnemyBoss.js';
+import Player from "./Class/Player/Player.js";
+import Enemy from "./Class/Ennemy/Enemy.js";
+import BulletControler from "./Class/Player/BulletControler.js";
+import Level from './Class/Fonctionnalité/level.js';
+import Boss from './Class/Ennemy/EnnemyBoss.js';
+import BulletControllerBoss from "./Class/Ennemy/BulletControlerBoss.js";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -24,6 +25,7 @@ const enemyCount = 5;
 const enemyWidth = 50;
 const enemyHeight = 50;
 let boss;
+const bulletControllerBoss = new BulletControllerBoss(canvas);
 
 let backgroundX = 0;
 const scrollSpeed = 2;
@@ -31,9 +33,9 @@ const scrollSpeed = 2;
 
 let currentLevelIndex = 0;
 const levels = [
-  new Level(1, 5, 2,"/src/ennemy/Saibabam.png" , "/src/fond/Fond1.png", 5),
-  new Level(2, 10, 3,"/src/ennemy/Sbire2.png" ,"/src/fond/Continent_de_Glace.webp", 5),
-  new Level(3, 1, 1, Boss.currentSprite, "/src/fond/fond3.png", 1)
+  new Level(1, 5, 1,"/src/ennemy/Saibabam.png" , "/src/fond/Fond1.png", 5, "Level 1 - Planéte vampa"),
+  new Level(2, 10, 2,"/src/ennemy/Sbire2.png" ,"/src/fond/Continent_de_Glace.webp", 5,"Level 2 - Défi"),
+  new Level(3, 1, 3, Boss.currentSprite, "/src/fond/fond3.png", 1, "Level 2 - Défi")
 ];
 
 
@@ -47,7 +49,6 @@ const transformationImages = [
   "/src/Broly/step/step5.png",
   "/src/Broly/step/step4.png",
   "/src/Broly/step/step5.png",
-  "/src/Broly/step/step1.png",
   "/src/Broly/step/step2.png",
   "/src/Broly/step/step3.png",
   "/src/Broly/step/step6.png",
@@ -68,7 +69,7 @@ function initLevel(levelIndex) {
   
   // Créez les ennemis pour les niveaux
   if (levelIndex === 2) { 
-    boss = new Boss(canvas.width - 200, canvas.height / 2 - 100, 100, 100, 200, 2);
+    boss = new Boss(canvas.width - 200, canvas.height / 2 - 100, bulletControllerBoss);
   } else {
     while (enemies.length < level.enemyCount) {
       const y = Math.random() * (canvas.height - enemyHeight);
@@ -77,6 +78,15 @@ function initLevel(levelIndex) {
       enemies.push(enemy);
     }
   }
+}
+
+function showLevelTitle(level, callback) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  ctx.font = "30px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(level.title, canvas.width / 2, canvas.height / 2);
+  setTimeout(callback, level.displayDuration);
 }
 let gameLoopInterval;
 
@@ -87,8 +97,10 @@ function startGame() {
   winMessage.classList.add("hidden");
   canvas.style.display = "block";
   playTransformation(() => {
-    initLevel(0);
+    showLevelTitle(levels[currentLevelIndex], () => {
+      initLevel(0);
     gameLoopInterval = setInterval(gameLoop, 1000 / 60);
+    });
   });
 }
 
@@ -167,8 +179,6 @@ function gameLoop() {
         const index = enemies.indexOf(enemy);
         enemies.splice(index, 1); 
       }
-
-      console.log(level.killCount);
       if (level.killCount >= level.killCountTarget) {
         niveauSuivant();
         level.killCount = 0;
@@ -191,6 +201,9 @@ function niveauSuivant() {
   currentLevelIndex++;
   if (currentLevelIndex < levels.length) {
     initLevel(currentLevelIndex);
+    showLevelTitle(levels[currentLevelIndex], () => {
+      gameLoopInterval = setInterval(gameLoop, 1000 / 60);
+    });
   } else {
     // Le jeu est terminé
     console.log("terminé");

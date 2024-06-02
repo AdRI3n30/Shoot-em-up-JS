@@ -1,15 +1,14 @@
-import BossBullet from "./BossBullet.js";
-
 export default class Boss{
 
-    constructor(x, y, width, height, health, speed) {
+    constructor(x, y, bulletControllerBoss) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
-        this.health = health;
-        this.maxHealth = health;
-        this.speed = speed;
+        this.width = 100;
+        this.height = 100;
+        this.health = 200;
+        this.maxHealth = 200;
+        this.bulletControllerBoss = bulletControllerBoss;
+        this.speed = 2;
         this.alive = true;
         this.direction = 'right'; 
         this.spriteDefault = new Image();
@@ -32,7 +31,7 @@ export default class Boss{
         this.lastAttackTime = Date.now();
         this.isAttacking = false; // Indicateur d'attaque
 
-        this.bossBullets = []; // Liste des balles du boss
+        this.projectiles = [];
     }
 
     draw(ctx) {
@@ -79,7 +78,7 @@ export default class Boss{
               this.y -= this.speed;
               this.currentSprite = this.spriteUp;
             } else {
-              this.changeDirection(); // Changer de direction si bloqué
+              this.changeDirection(); 
             }
             break;
           case 'down':
@@ -131,14 +130,21 @@ export default class Boss{
 
     attack() {
         if (this.alive) {
-          this.isAttacking = true; // Marquer comme en attaque
-          this.currentSprite = this.spriteShoot; // Changer le sprite pour l'attaque
+          this.isAttacking = true; 
+          this.currentSprite = this.spriteShoot;
+          const speed = 5;
+          const delay = 2;
+          const damage = 1;
+          const bulletX = this.x + this.width / 2;
+          const bulletY = this.y;
+          this.bulletControllerBoss.shoot(bulletX, bulletY, speed, damage, delay);
+          this.shootTimer = this.shootDuration;
           setTimeout(() => {
-            this.currentSprite = this.spriteDefault; // Revenir au sprite par défaut après l'attaque
-            this.isAttacking = false; // Fin de l'attaque
-          }, 900); // Durée du changement de sprite pendant l'attaque
+            this.currentSprite = this.spriteDefault; 
+            this.isAttacking = false; 
+          }, 900); 
     
-          // Logique de l'attaque ici (par exemple, tirer un projectile)
+    
         }
       }
     
