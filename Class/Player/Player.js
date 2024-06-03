@@ -34,8 +34,6 @@ export default class Player {
   }
 
 
-  
-
 
   reset() {
     this.x = this.initialX;
@@ -69,21 +67,13 @@ export default class Player {
     this.shoot();
   }
 
-
-  //Fonctionne permettant l'affichage de la barre de vie
   drawHealthBar(ctx) {
     const barWidth = this.width;
     const barHeight = 5;
     const barX = this.x;
     const barY = this.y - barHeight - 5;
-
-
-    //Barre derrière la vie montrant ainsi les pv perdus
     ctx.fillStyle = "red";
     ctx.fillRect(barX, barY, barWidth, barHeight);
-
-
-    //Barre de vie 
     ctx.fillStyle = "green";
     ctx.fillRect(barX, barY, (this.health / this.maxHealth) * barWidth, barHeight);
   }

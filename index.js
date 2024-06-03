@@ -73,29 +73,24 @@ function gameLoop() {
     clearInterval(gameLoopInterval); 
     return;
   }
-  
   const level = Level.getCurrentLevel();
-
-  // Vérifier si le niveau est null
   if (level === null) {
     console.log('Terminé')
-    clearInterval(gameLoopInterval); // Arrêter le jeu
-    winMessage.style.visibility = 'visible'; // Afficher winMessage
+    clearInterval(gameLoopInterval); 
+    winMessage.style.visibility = 'visible'; 
     return;
   }
-
   backgroundX -= scrollSpeed; 
   if (backgroundX <= -canvas.width) {
     backgroundX = 0;
   }
-
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(level.backgroundImage, backgroundX, 0, canvas.width, canvas.height);
   ctx.drawImage(level.backgroundImage, backgroundX + canvas.width, 0, canvas.width, canvas.height);
   player.draw(ctx);
   player.bulletController.draw(ctx);
 
-  if (level.enemyType == "Boss") {  // Niveau du Boss
+  if (level.enemyType == "Boss") { 
     if (boss && boss.alive) {
       boss.draw(ctx, canvas);
       boss.bulletControllerBoss.draw(ctx);

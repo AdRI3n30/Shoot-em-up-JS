@@ -11,7 +11,7 @@ export default class Enemyboss {
       this.speed = 2;
       this.alive = true;
       this.direction = 'right';
-      this.directionChangeInterval = 1000; // Intervalle de changement de direction en ms
+      this.directionChangeInterval = 1000;
       this.lastDirectionChangeTime = Date.now();
       this.isAttack = false;
       this.sprites = {
@@ -40,7 +40,7 @@ export default class Enemyboss {
 
       this.currentSprite = this.sprites[this.name]?.spriteDefault || this.sprites.Gogeta.spriteDefault;
       this.currentShoot = this.sprites[this.name]?.spriteShoot || this.sprites.Gogeta.spriteShoot;
-      this.attackDuration = 4000; // Durée de l'attaque en millisecondes
+      this.attackDuration = 4000;
       this.lastAttackTime = 0; 
   }
 
