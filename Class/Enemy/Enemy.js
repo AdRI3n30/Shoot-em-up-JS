@@ -1,26 +1,30 @@
 // js/enemy.js
 
 export default class Enemy {
-    constructor(x, y, width, height, spriteSrc, speed) {
+    constructor(x, y, width, height, speed, name) {
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
       this.speed = speed;
-      this.image = new Image();
-      this.image.src = spriteSrc;
+      this.name = name;
+      this.enemy1 = new Image();
+      this.enemy1.src = "/src/enemy/Saibabam.png";
+      this.enemy2 = new Image();
+      this.enemy2.src = "/src/enemy/Sbire2.png";
       this.imageLoaded = false;
-  
-      this.image.onload = () => {
-        this.imageLoaded = true;
-      };
+
     }
   
     draw(ctx) {
-      if (this.imageLoaded) {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-      } else {
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+      switch (this.name) {
+        case "Saibaman":
+          ctx.drawImage(this.enemy1 , this.x, this.y, this.width, this.height);
+          break; // Ajoute le break ici
+        case "Sbire":
+          ctx.drawImage(this.enemy2, this.x, this.y, this.width, this.height);
+          break; // Ajoute le break ici
+        default:
       }
     }
   

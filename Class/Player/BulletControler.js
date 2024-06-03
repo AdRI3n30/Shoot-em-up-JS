@@ -7,6 +7,7 @@ export default class BulletControler{
         this.canvas = canvas;
     }
     shoot(x, y ,speed , damage , delay){
+
         if(this.timerTillNextBullet <= 0){
             this.bullets.push(new Bullet(x , y , speed, damage));
             this.timerTillNextBullet = delay;
@@ -35,6 +36,6 @@ export default class BulletControler{
     }
 
     isBulletOffScreen(bullet){
-        return bullet.y <= bullet.height;
+        return bullet.x + bullet.width < 0 || bullet.x > this.canvas.width;
     }   
 }

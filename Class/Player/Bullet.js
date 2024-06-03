@@ -5,20 +5,16 @@ export default class Bullet {
         this.speed = speed;
         this.damage = damage;
         this.color = "yellow";
-
-        // Chargez les trois images de sprites
         this.sprites = [
             this.loadSprite("/src/Broly/blazt1.png"),
             this.loadSprite("/src/Broly/blazt2.png"),
             this.loadSprite("/src/Broly/blazt3.png")
         ];
 
-        // Choisissez une image de sprite au hasard
         this.currentSprite = this.sprites[Math.floor(Math.random() * this.sprites.length)];
 
-        // Définissez les dimensions souhaitées pour le bullet
-        this.width = 15;  // ajustez cette valeur en fonction de vos besoins
-        this.height = 30; // ajustez cette valeur en fonction de vos besoins
+        this.width = 15;  
+        this.height = 30; 
     }
 
     loadSprite(src) {

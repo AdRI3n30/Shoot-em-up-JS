@@ -20,26 +20,15 @@ export default class Player {
     this.spriteLeft.src = "/src/Broly/Broly3.png";
     this.shootDuration = 6;
     this.shootTimer = 0;
+    this.points = 0;
     this.currentSprite = this.spriteDefault;
-    this.transformationImages  = [
-      "/src/Broly/step/step4.png",
-      "/src/Broly/step/step5.png",
-      "/src/Broly/step/step4.png",
-      "/src/Broly/step/step5.png",
-      "/src/Broly/step/step4.png",
-      "/src/Broly/step/step5.png",
-      "/src/Broly/step/step4.png",
-      "/src/Broly/step/step5.png",
-      "/src/Broly/step/step2.png",
-      "/src/Broly/step/step3.png",
-      "/src/Broly/step/step6.png",
-      "/src/Broly/step/step7.png",
-      "/src/Broly/step/step8.png",
-      "/src/Broly/step/step9.png",
-      "/src/Broly/step/step10.png"
-    ];
-    this.transformationIndex =  0;
-    this.isTransfo = false;
+    this.transformSprites = [];
+    for (let i = 1; i <= 10; i++) {
+      const image = new Image();
+      image.src = `/src/Broly/step/step${i}.png`;
+      this.transformSprites.push(image);
+    }
+    this.transformSpriteIndex = 0;
     document.addEventListener("keydown", this.keydown);
     document.addEventListener("keyup", this.keyup);
   }
@@ -54,6 +43,9 @@ export default class Player {
     this.health = this.maxHealth;
     this.isGameOver = false;
   }
+  displayPoints() {
+    console.log(`Points: ${this.points}`);
+  }
 
   draw(ctx) {
     if (this.isGameOver) {
@@ -61,7 +53,11 @@ export default class Player {
       return;
     }
     this.move();
-    ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
+    if (this.transforming) { 
+      ctx.drawImage(this.transformSprites[this.transformSpriteIndex - 1], this.x, this.y, this.width, this.height);
+    } else { 
+      ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
+    }
     this.drawHealthBar(ctx);
 
     if (this.shootTimer > 0) {
@@ -176,21 +172,16 @@ export default class Player {
   };
 
 
-  playTransformation(ctx) {
-    let transformationInterval = setInterval(() => {
-      if (this.transformationIndex >= this.transformationImages.length) {
-        clearInterval(transformationInterval);
-        return;
+  transform() {
+    this.transforming = true;
+    this.transformInterval = setInterval(() => {
+      this.currentSprite = this.transformSprites[this.transformSpriteIndex];
+      this.transformSpriteIndex++;
+      if (this.transformSpriteIndex >= this.transformSprites.length) {
+        clearInterval(this.transformInterval); 
+        this.transforming = false; 
       }
-      let image = new Image();
-      image.src = this.transformationImages[this.transformationIndex];
-      image.onload = () => {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.drawImage(image, (ctx.canvas.width - image.width) / 2, (ctx.canvas.height - image.height) / 2);
-        this.transformationIndex++;
-        console.log("OK")
-      };
-    }, 1000); // Intervalle de 500 ms entre chaque image de transformation
-    this.isTransfo = true;
+    }, 300); 
   }
+
 }
