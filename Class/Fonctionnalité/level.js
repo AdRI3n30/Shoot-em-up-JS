@@ -12,26 +12,31 @@ export default class Level {
   }
 
   static levels = [
-    new Level(1, 1, 3, "Gogeta","Boss", "/src/fond/fond3.png", 1) ,
-    new Level(2, 5, 1, "Saibaman","Sbire", "/src/fond/Fond1.png", 10),
-    new Level(3, 10, 2, "Sbire","Sbire", "/src/fond/Continent_de_Glace.webp", 20), 
-    new Level(4, 1, 3, "Gogeta","Boss", "/src/fond/fond3.png", 1) 
+    new Level(1, 20, 1, "Saibaman","Sbire", "/src/fond/Fond1.png", 10),
+    new Level(2, 1, 3, "Vegeta","Boss", "/src/fond/Fond1.png", 1), 
+    new Level(3, 20, 2, "Sbire","Sbire", "/src/fond/Continent_de_Glace.webp", 20),
+    new Level(4, 1, 3, "Goku","Boss", "/src/fond/Continent_de_Glace.webp", 1)
   ];
 
   static currentLevelIndex = 0;
 
   static getCurrentLevel() {
-    return Level.levels[Level.currentLevelIndex];
-  }
-
-  static nextLevel() {
-    Level.currentLevelIndex++;
     if (Level.currentLevelIndex < Level.levels.length) {
       return Level.levels[Level.currentLevelIndex];
     } else {
-      console.log("Jeu terminé");
-      Level.currentLevelIndex = 0;
       return null;
     }
   }
+  static nextLevel() {
+    Level.currentLevelIndex++;
+    if (Level.currentLevelIndex < Level.levels.length) {
+      console.log(Level.currentLevelIndex)
+      return Level.levels[Level.currentLevelIndex];
+    } else {
+      console.log("Jeu terminé");
+        return null;
+
+    }
+  }
+
 }

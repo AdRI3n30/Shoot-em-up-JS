@@ -73,7 +73,17 @@ function gameLoop() {
     clearInterval(gameLoopInterval); 
     return;
   }
+  
   const level = Level.getCurrentLevel();
+
+  // Vérifier si le niveau est null
+  if (level === null) {
+    console.log('Terminé')
+    clearInterval(gameLoopInterval); // Arrêter le jeu
+    winMessage.style.visibility = 'visible'; // Afficher winMessage
+    return;
+  }
+
   backgroundX -= scrollSpeed; 
   if (backgroundX <= -canvas.width) {
     backgroundX = 0;
@@ -97,6 +107,10 @@ function gameLoop() {
         }
       }
 
+      if (bulletControllerBoss.collideWith(player)) {
+        player.takeDamage(30);
+      }
+
       if (player.collideWith(boss)) {
         player.takeDamage(10);
       }
@@ -112,7 +126,6 @@ function gameLoop() {
         level.killCount++;
       }
 
-
       if (player.collideWith(enemy)) {
         player.takeDamage(10); 
         const index = enemies.indexOf(enemy);
@@ -125,8 +138,6 @@ function gameLoop() {
 
       }
     });
-
-    // Rajoute des ennemies s'il sont tué
     while (enemies.length < level.enemyCount) {
       const y = Math.random() * (canvas.height - enemyHeight);
       const x = canvas.width + Math.random() * canvas.width;
@@ -136,7 +147,6 @@ function gameLoop() {
   }
 }
 
-// Fonction permettant la vérification des collisions
 Player.prototype.collideWith = function (sprite) {
   return (
     this.x < sprite.x + sprite.width &&
@@ -148,7 +158,10 @@ Player.prototype.collideWith = function (sprite) {
 
 
 startButton.addEventListener("click", startGame);
-restartButton.addEventListener("click", startGame);
+restartButton.addEventListener("click", () => {
+  Level.currentLevelIndex = 0; 
+  startGame(); 
+});
 
 
 

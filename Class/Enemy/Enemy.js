@@ -1,5 +1,3 @@
-// js/enemy.js
-
 export default class Enemy {
     constructor(x, y, width, height, speed, name) {
       this.x = x;
@@ -20,23 +18,21 @@ export default class Enemy {
       switch (this.name) {
         case "Saibaman":
           ctx.drawImage(this.enemy1 , this.x, this.y, this.width, this.height);
-          break; // Ajoute le break ici
+          break; 
         case "Sbire":
           ctx.drawImage(this.enemy2, this.x, this.y, this.width, this.height);
-          break; // Ajoute le break ici
+          break; 
         default:
       }
     }
   
     update(canvas) {
-      this.x -= this.speed; // Déplacer vers la gauche
-      if (this.x + this.width < 0) { // Réinitialiser l'ennemi s'il sort de l'écran
+      this.x -= this.speed; 
+      if (this.x + this.width < 0) { 
         this.x = canvas.width + Math.random() * canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
       }
     }
-  
-    takeDamage(damage) {
-      // Logique pour gérer les dégâts subis par l'ennemi
-    }
+
+    
   }
