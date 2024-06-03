@@ -21,9 +21,31 @@ export default class Player {
     this.shootDuration = 6;
     this.shootTimer = 0;
     this.currentSprite = this.spriteDefault;
+    this.transformationImages  = [
+      "/src/Broly/step/step4.png",
+      "/src/Broly/step/step5.png",
+      "/src/Broly/step/step4.png",
+      "/src/Broly/step/step5.png",
+      "/src/Broly/step/step4.png",
+      "/src/Broly/step/step5.png",
+      "/src/Broly/step/step4.png",
+      "/src/Broly/step/step5.png",
+      "/src/Broly/step/step2.png",
+      "/src/Broly/step/step3.png",
+      "/src/Broly/step/step6.png",
+      "/src/Broly/step/step7.png",
+      "/src/Broly/step/step8.png",
+      "/src/Broly/step/step9.png",
+      "/src/Broly/step/step10.png"
+    ];
+    this.transformationIndex =  0;
+    this.isTransfo = false;
     document.addEventListener("keydown", this.keydown);
     document.addEventListener("keyup", this.keyup);
   }
+
+
+  
 
 
   reset() {
@@ -152,4 +174,23 @@ export default class Player {
       this.shootPressed = false;
     }
   };
+
+
+  playTransformation(ctx) {
+    let transformationInterval = setInterval(() => {
+      if (this.transformationIndex >= this.transformationImages.length) {
+        clearInterval(transformationInterval);
+        return;
+      }
+      let image = new Image();
+      image.src = this.transformationImages[this.transformationIndex];
+      image.onload = () => {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.drawImage(image, (ctx.canvas.width - image.width) / 2, (ctx.canvas.height - image.height) / 2);
+        this.transformationIndex++;
+        console.log("OK")
+      };
+    }, 1000); // Intervalle de 500 ms entre chaque image de transformation
+    this.isTransfo = true;
+  }
 }

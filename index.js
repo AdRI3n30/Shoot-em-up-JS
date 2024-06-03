@@ -31,42 +31,8 @@ let backgroundX = 0;
 const scrollSpeed = 2;
 
 
-let currentLevelIndex = 0;
-const levels = [
-  new Level(1, 5, 1,"/src/ennemy/Saibabam.png" , "/src/fond/Fond1.png", 5),
-  new Level(2, 5, 1,"/src/ennemy/Saibabam.png" , "/src/fond/Fond1.png", 5),
-  new Level(3, 5, 1,"/src/ennemy/Saibabam.png" , "/src/fond/Fond1.png", 5),
-  new Level(4, 5, 1,"/src/ennemy/Saibabam.png" , "/src/fond/Fond1.png", 5),
-  new Level(5, 5, 1,"/src/ennemy/Saibabam.png" , "/src/fond/Fond1.png", 5),
-  new Level(7, 10, 2,"/src/ennemy/Sbire2.png" ,"/src/fond/Continent_de_Glace.webp", 5,"Level 2 - Défi"),
-  new Level(8, 1, 3, Boss.currentSprite, "/src/fond/fond3.png", 1, "Level 2 - Défi")
-];
-
-
-
-const transformationImages = [
-  "/src/Broly/step/step4.png",
-  "/src/Broly/step/step5.png",
-  "/src/Broly/step/step4.png",
-  "/src/Broly/step/step5.png",
-  "/src/Broly/step/step4.png",
-  "/src/Broly/step/step5.png",
-  "/src/Broly/step/step4.png",
-  "/src/Broly/step/step5.png",
-  "/src/Broly/step/step2.png",
-  "/src/Broly/step/step3.png",
-  "/src/Broly/step/step6.png",
-  "/src/Broly/step/step7.png",
-  "/src/Broly/step/step8.png",
-  "/src/Broly/step/step9.png",
-  "/src/Broly/step/step10.png"
-];
-let transformationIndex = 0;
-
-
-
 function initLevel(levelIndex) {
-  const level = levels[levelIndex];
+  const level = Level.levels[levelIndex];
   backgroundX = 0;
   player2 = new Player(canvas.width / 2.2, canvas.height / 1.3, bulletController);
   enemies = [];
@@ -84,14 +50,6 @@ function initLevel(levelIndex) {
   }
 }
 
-function showLevelTitle(level, callback) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
-  ctx.font = "30px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(level.title, canvas.width / 2, canvas.height / 2);
-  setTimeout(callback, level.displayDuration);
-}
 let gameLoopInterval;
 
 function startGame() {
@@ -100,32 +58,9 @@ function startGame() {
   startButton.style.display = "none";
   winMessage.classList.add("hidden");
   canvas.style.display = "block";
-  playTransformation(() => {
-    showLevelTitle(levels[currentLevelIndex], () => {
-      initLevel(0);
-    gameLoopInterval = setInterval(gameLoop, 1000 / 60);
-    });
-  });
+  initLevel(0);
+  gameLoopInterval = setInterval(gameLoop, 1000 / 60);
 }
-
-
-function playTransformation(callback) {
-  let transformationInterval = setInterval(() => {
-    if (transformationIndex >= transformationImages.length) {
-      clearInterval(transformationInterval);
-      callback();
-      return;
-    }
-    let image = new Image();
-    image.src = transformationImages[transformationIndex];
-    image.onload = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, (canvas.width - image.width) / 2, (canvas.height - image.height) / 2);
-      transformationIndex++;
-    };
-  }, 270); // Intervalle de 500 ms entre chaque image de transformation
-}
-
 
 
 
@@ -136,7 +71,7 @@ function gameLoop() {
     clearInterval(gameLoopInterval); 
     return;
   }
-  const level = levels[currentLevelIndex];
+  const level = Level.levels[currentLevelIndex];
   backgroundX -= scrollSpeed; 
   if (backgroundX <= -canvas.width) {
     backgroundX = 0;
@@ -146,9 +81,11 @@ function gameLoop() {
   ctx.drawImage(level.backgroundImage, backgroundX, 0, canvas.width, canvas.height);
   ctx.drawImage(level.backgroundImage, backgroundX + canvas.width, 0, canvas.width, canvas.height);
 
+  do{
+    player.playTransformation(ctx);
+  }while (Player.isTransfo == false);
   player.draw(ctx);
   player.bulletController.draw(ctx);
-
 
   if (currentLevelIndex === 2) {  // Niveau du Boss
     if (boss && boss.alive) {
@@ -197,31 +134,6 @@ function gameLoop() {
       enemies.push(enemy);
     }
   }
-}
-
-
-
-function niveauSuivant() {
-  currentLevelIndex++;
-  if (currentLevelIndex < levels.length) {
-    initLevel(currentLevelIndex);
-    showLevelTitle(levels[currentLevelIndex], () => {
-      gameLoopInterval = setInterval(gameLoop, 1000 / 60);
-    });
-  } else {
-    // Le jeu est terminé
-    console.log("terminé");
-    currentLevelIndex = 0;
-    Player.health = 100; 
-    showWinMessage();
-    clearInterval(gameLoopInterval);
-  }
-}
-
-
-function showWinMessage() {
-  canvas.style.display = "none";
-  winMessage.style.visibility = 'visible';
 }
 
 // Fonction permettant la vérification des collisions
