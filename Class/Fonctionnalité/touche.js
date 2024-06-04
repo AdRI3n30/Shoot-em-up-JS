@@ -23,4 +23,9 @@ document.addEventListener("keyup", function(event) {
     }
   }
 });
+
+function updateScore() {
+  const scoreElement = document.getElementById("score");
+  scoreElement.textContent = `Score: ${player.points}`;
+}
   
