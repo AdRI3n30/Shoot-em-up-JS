@@ -58,7 +58,7 @@ function startGame() {
   startButton.style.display = "none";
   winMessage.classList.add("hidden");
   canvas.style.display = "block";
-  initLevel(0);
+  initLevel(1);
   gameLoopInterval = setInterval(gameLoop, 1000 / 60);
 }
 
