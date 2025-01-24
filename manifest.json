@@ -1,0 +1,21 @@
+{
+    "name": "Dragon Ball Shoot'em Up",
+    "short_name": "DBL",
+    "start_url": "./jeux.html",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#1a1a1a",
+    "icons": [
+      {
+        "src": "src/dbl.jpg",
+        "sizes": "192x192",
+        "type": "image/jpg"
+      },
+      {
+        "src": "src/dbl.jpg",
+        "sizes": "512x512",
+        "type": "image/jpg"
+      }
+    ]
+  }
+  
