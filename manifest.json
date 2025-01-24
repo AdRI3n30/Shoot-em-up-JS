@@ -7,14 +7,14 @@
     "theme_color": "#1a1a1a",
     "icons": [
       {
-        "src": "src/dbl.jpg",
+        "src": "src/DBL.ico",
         "sizes": "192x192",
-        "type": "image/jpg"
+        "type": "image/icon"
       },
       {
-        "src": "src/dbl.jpg",
+        "src": "src/DBL.ico",
         "sizes": "512x512",
-        "type": "image/jpg"
+        "type": "image/icon"
       }
     ]
   }
